@@ -538,8 +538,8 @@ class Samples(Main):
 
     MERGE_TOPIC_LABEL = "Merge Topics"
     MERGE_TOPIC_SHORTHELP = "Create a new Merged Topic from selected Topics"
-    SPLIT_TOPIC_LABEL = "Split Topics"
-    SPLIT_TOPIC_SHORTHELP = "Remove selected topics from their Merged Topic"
+    UNMERGE_TOPIC_LABEL = "Unmerge Topics"
+    UNMERGE_TOPIC_SHORTHELP = "Remove selected topics from their Merged Topic"
     REMOVE_TOPIC_LABEL = "Remove Topics"
     REMOVE_TOPIC_SHORTHELP = "Remove selected topics from the model"
     REMOVE_TOPIC_WARNING = "\nWARNING this action cannot be undone."
