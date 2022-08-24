@@ -142,6 +142,7 @@ def chord_diagram(mat, outer_circle=None, names=None, order=None, width=0.1, pad
         for i in outer_names:
             name_cont, ind = outer_names[i].contains(event)
             if name_cont and i in outer_images and outer_images[i].get_visible() is False:
+                outer_images[i].set_zorder(10000)
                 outer_images[i].set_visible(True)
                 _.canvas.draw_idle()
             elif name_cont and i in outer_images and outer_images[i].get_visible():

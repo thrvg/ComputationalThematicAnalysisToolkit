@@ -361,8 +361,9 @@ class PartsViewCtrl(dv.DataViewCtrl):
 #     1. Label: string
 #     2. Words: string
 class TopicViewModel(dv.PyDataViewModel):
-    def __init__(self, data):
+    def __init__(self, sample_panel, data):
         dv.PyDataViewModel.__init__(self)
+        self.sample_panel = sample_panel
         self.data = data
         self.UseWeakRefs(False)
 
@@ -446,6 +447,7 @@ class TopicViewModel(dv.PyDataViewModel):
         if col == 1:
             if node.label != value:
                 node.label = value
+                self.sample_panel.DrawLDAPlot(self.sample_panel.selected_parts)
                 main_frame = wx.GetApp().GetTopWindow()
                 main_frame.SamplesUpdated()
 

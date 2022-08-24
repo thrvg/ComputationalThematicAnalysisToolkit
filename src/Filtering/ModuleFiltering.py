@@ -672,7 +672,7 @@ class WordsPanel(wx.Panel):
         logger = logging.getLogger(__name__+".WordsPanel["+self.word_type+"]["+str(self.parent_frame.name)+"].OnSearch")
         logger.info("Starting")
         self.DisplayWordsList()
-        self.search_count_text.SetLabel(str(self.words_list.GetNumberRows())+GUIText.SEARCH_RESULTS_LABEL)
+        self.search_count_text.SetLabel(str(len(self.words_list.data))+GUIText.SEARCH_RESULTS_LABEL)
         self.Layout()
         logger.info("Finished")
 
@@ -685,7 +685,7 @@ class WordsPanel(wx.Panel):
         if self.searchctrl.GetValue() == "":
             self.search_count_text.SetLabel("")
         else:
-            self.search_count_text.SetLabel(str(self.words_list.GetNumberRows())+GUIText.SEARCH_RESULTS_LABEL)
+            self.search_count_text.SetLabel(str(len(self.words_list.data))+GUIText.SEARCH_RESULTS_LABEL)
         self.Layout()
         logger.info("Finished")
     
