@@ -1457,7 +1457,7 @@ class TopicListPanel(wx.Panel):
         cutoff_sizer.Add(self.cutoff_spin, 0, wx.ALIGN_CENTER)
         controls_sizer.Add(cutoff_sizer, proportion=0, flag=wx.ALL, border=5)
         
-        self.topic_list_model = SamplesDataViews.TopicViewModel(sample.parts_dict.values())
+        self.topic_list_model = SamplesDataViews.TopicViewModel(self.sample_panel, sample.parts_dict.values())
         self.topic_list_ctrl = SamplesDataViews.TopicViewCtrl(self, self.topic_list_model)
         sizer.Add(self.topic_list_ctrl, 1, wx.EXPAND)
 
