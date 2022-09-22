@@ -1389,7 +1389,7 @@ class DocumentViewCtrl(dv.DataViewCtrl):
         column.SetWidth(wx.COL_WIDTH_AUTOSIZE)
         remaining_width = remaining_width - column.GetWidth()
         column = self.GetColumn(col_count+1)
-        col_width = column.SetWidth(wx.COL_WIDTH_AUTOSIZE)
+        column.SetWidth(wx.COL_WIDTH_AUTOSIZE)
         remaining_width = remaining_width - column.GetWidth()
         col = 0
         for column in self.GetColumns():
@@ -1398,6 +1398,7 @@ class DocumentViewCtrl(dv.DataViewCtrl):
                 col_width = column.GetWidth()
                 if col_width > remaining_width/(col_count-col):
                     col_width = remaining_width/(col_count-col)
+                    col_width = int(col_width)
                     column.SetWidth(col_width)
                 remaining_width = remaining_width - col_width
             else:

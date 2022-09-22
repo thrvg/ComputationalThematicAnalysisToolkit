@@ -2,6 +2,7 @@ import logging
 
 import matplotlib as mpl
 mpl.use('WXAgg')
+import matplotlib.pyplot as plt
 import networkx as nx
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.backends.backend_wxagg import NavigationToolbar2WxAgg as NavigationToolbar
