@@ -60,3 +60,11 @@ class CheckListBoxComboPopup(wx.ComboPopup):
     
     def GetStringValue(self):
         return self.label
+
+
+class InfoIcon(wx.StaticBitmap):
+    def __init__(self, parent, text):
+        bmp = wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, size=wx.Size(12,12))
+        wx.StaticBitmap.__init__(self, parent=parent, bitmap=bmp)
+        self.SetToolTip(text)
+

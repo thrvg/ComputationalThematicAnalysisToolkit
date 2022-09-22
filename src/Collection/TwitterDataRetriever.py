@@ -37,9 +37,6 @@ def FilesAvailable(name, start_date, end_date, prefix):
     #data location
     path = os.path.join(Constants.DATA_PATH,'Twitter')
     if not os.path.exists(path):
-        os.makedirs(path) 
-    path = os.path.join(Constants.DATA_PATH,'Twitter', name)
-    if not os.path.exists(path):
         os.makedirs(path)
     # r=root, d=directories, f = files
     for r, d, f in os.walk(path):
@@ -192,9 +189,9 @@ class TweepyRetriever():
         while (start < end):
             # 100 tweets per API request, and 450 requests/15 mins (usually only hits < 300 requests before reaching API limit though)
             if last_retrieved_id == None:
-                tweets_data = tweepy.Cursor(api.search, query, lang="en", until=end).items(100)
+                tweets_data = tweepy.Cursor(api.search_tweets, query, lang="en", until=end).items(100)
             else:
-                tweets_data = tweepy.Cursor(api.search, query, lang="en", until=end, max_id=last_retrieved_id-1).items(100)
+                tweets_data = tweepy.Cursor(api.search_tweets, query, lang="en", until=end, max_id=last_retrieved_id-1).items(100)
             # send requests for tweets while the rate limit has not been exceeded
             while (tweets_retrieved):
                 tweets_retrieved = False
@@ -209,10 +206,10 @@ class TweepyRetriever():
                         tweets_retrieved = True
 
                     if last_retrieved_id == None:
-                        tweets_data = tweepy.Cursor(api.search, query, lang="en", until=end).items(100)
+                        tweets_data = tweepy.Cursor(api.search_tweets, query, lang="en", until=end).items(100)
                     else:
-                        tweets_data = tweepy.Cursor(api.search, query, lang="en", until=end, max_id=last_retrieved_id-1).items(100)
-                except tweepy.error.TweepError as e:
+                        tweets_data = tweepy.Cursor(api.search_tweets, query, lang="en", until=end, max_id=last_retrieved_id-1).items(100)
+                except tweepy.errors.TweepyException as e:
                     if e.response.status_code == 429:
                         #TODO: remove when better api is configured
                         print("Twitter API rate limit reached.")
