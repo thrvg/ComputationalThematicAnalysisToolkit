@@ -323,6 +323,7 @@ class DocumentListViewCtrl(dv.DataViewCtrl):
             col_width = column.GetWidth()
             if col_width > remaining_width/(col_count-col):
                 col_width = remaining_width/(col_count-col)
+                col_width = int(col_width)
                 column.SetWidth(col_width)
             remaining_width = remaining_width - col_width
             col = col + 1
