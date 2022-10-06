@@ -129,7 +129,7 @@ class SampleCreatePanel(wx.Panel):
             if status_flag:
                 self.Freeze()
                 main_frame.CreateProgressDialog(GUIText.GENERATING_DEFAULT_LABEL,
-                                    warning=GUIText.GENERATE_WARNING+"\n"+GUIText.SIZE_WARNING_MSG,
+                                    warning=GUIText.SIZE_WARNING_MSG,
                                     freeze=False)
                 main_frame.StepProgressDialog(GUIText.GENERATING_DEFAULT_MSG)
                 main_frame.AutoSaveStart(self.OnContinueCreateSample, [model_type, model_parameters])
@@ -152,7 +152,6 @@ class SampleCreatePanel(wx.Panel):
                     main_frame.CreateProgressDialog(GUIText.GENERATING_DEFAULT_LABEL,
                                         warning=GUIText.GENERATE_WARNING+"\n"+GUIText.SIZE_WARNING_MSG,
                                         freeze=False)
-                    main_frame.AutoSaveStart()
                     main_frame.StepProgressDialog(GUIText.GENERATING_DEFAULT_MSG)
                     self.start_dt = datetime.now()
                     model_parameters = create_dialog.model_parameters
@@ -194,16 +193,21 @@ class SampleCreatePanel(wx.Panel):
             main_frame.DocumentsUpdated(self)
             main_frame.AutoSaveStart()
             main_frame.CloseProgressDialog(thaw=False)
-        elif model_type == 'LDA':
-            main_frame.PulseProgressDialog(GUIText.GENERATING_LDA_SUBLABEL+str(name))
-        elif model_type == 'Biterm':
-            main_frame.PulseProgressDialog(GUIText.GENERATING_BITERM_SUBLABEL+str(name))
-        elif model_type == 'NMF':
-            main_frame.PulseProgressDialog(GUIText.GENERATING_NMF_SUBLABEL+str(name))
-        self.capture_thread = SamplesThreads.CaptureThread(self,
-                                                           main_frame,
-                                                           model_parameters,
-                                                           model_type)
+            self.Thaw()
+        else:
+            if model_type == 'LDA':
+                main_frame.PulseProgressDialog(GUIText.GENERATING_LDA_SUBLABEL+str(name))
+                main_frame.statusbar.SetStatusText("\u24D8 LDA model - "+str(name)+" is generating. Do Not Close Application")
+            elif model_type == 'Biterm':
+                main_frame.PulseProgressDialog(GUIText.GENERATING_BITERM_SUBLABEL+str(name))
+                main_frame.statusbar.SetStatusText("\u24D8 Biterm model - "+str(name)+" is generating. Do Not Close Application")
+            elif model_type == 'NMF':
+                main_frame.PulseProgressDialog(GUIText.GENERATING_NMF_SUBLABEL+str(name))
+                main_frame.statusbar.SetStatusText("\u24D8 NMF model - "+str(name)+" is generating. Do Not Close Application")
+            self.capture_thread = SamplesThreads.CaptureThread(self,
+                                                            main_frame,
+                                                            model_parameters,
+                                                            model_type)
         logger.info("Finished")
 
     def OnFinishCreateSample(self, event):
@@ -875,7 +879,6 @@ class TopicSamplePanel(AbstractSamplePanel):
         self.Freeze()
         main_frame = wx.GetApp().GetTopWindow()
         main_frame.CreateProgressDialog(GUIText.GENERATED_DEFAULT_LABEL,
-                                        warning=GUIText.GENERATE_WARNING+"\n"+GUIText.SIZE_WARNING_MSG,
                                         freeze=False)
         try:
             main_frame.PulseProgressDialog(GUIText.GENERATED_DEFAULT_LABEL+": "+str(self.sample.name))
@@ -889,6 +892,7 @@ class TopicSamplePanel(AbstractSamplePanel):
         finally:
             main_frame.multiprocessing_inprogress_flag = False
             main_frame.CloseProgressDialog(thaw=False)
+            main_frame.statusbar.SetStatusText("")
             self.Thaw()
         logger.info("Finished")
     

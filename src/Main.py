@@ -42,6 +42,8 @@ class MainFrame(wx.Frame):
         self.SetMinSize(wx.Size(400, 400))
         self.Maximize(True)
 
+        self.statusbar = self.CreateStatusBar(1)
+
         self.GROUP_LABEL_FONT = wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.NORMAL, underline=True)
         self.DETAILS_LABEL_FONT = wx.Font(-1, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, "")
 
