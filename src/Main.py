@@ -68,6 +68,8 @@ class MainFrame(wx.Frame):
         self.progress_dialog_references = 0
         self.closing = False
         self.autosave_flag = False
+        self.autosave_next_func = None
+        self.autosave_next_args = None
 
         self.options_dialog = None
         self.about_dialog = None
@@ -628,7 +630,7 @@ class MainFrame(wx.Frame):
 
             self.save_thread = MainThreads.SaveThread(self, self.save_path, self.current_workspace.name, config_data, self.datasets, self.samples, self.codes, self.themes, notes_text, self.last_load_dt)
 
-    def AutoSaveStart(self):
+    def AutoSaveStart(self, next_func=None, next_args=None):
         '''
         function for auto saving data after completing important operations
         only called as part of another long running operation
@@ -636,6 +638,8 @@ class MainFrame(wx.Frame):
         logger = logging.getLogger(__name__+".MainFrame.OnAutoSaveStart")
         logger.info("Starting")
         self.autosave_flag = True
+        self.autosave_next_func = next_func
+        self.autosave_next_args = next_args
         self.CreateProgressDialog(title=GUIText.SAVE_BUSY_LABEL,
                                   warning=GUIText.SIZE_WARNING_MSG,
                                   freeze=True)
@@ -677,6 +681,10 @@ class MainFrame(wx.Frame):
         logger.info("Finished")
         if self.closing:
             self.OnCloseEnd(event)
+        elif self.autosave_next_func != None:
+            self.autosave_next_func(self.autosave_next_args)
+            self.autosave_next_func = None
+            self.autosave_next_args = None
     
     def OnImportCodes(self, event):
         logger = logging.getLogger(__name__+".MainFrame.OnImportCodes")

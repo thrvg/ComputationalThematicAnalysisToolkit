@@ -110,7 +110,7 @@ class SaveThread(Thread):
                 logger.info("Moving Files to autsave folder")
                 if os.path.exists(self.save_path):
                     shutil.rmtree(self.save_path)
-                shutil.copytree(self.current_workspace_path, self.save_path)
+                shutil.copytree(self.current_workspace_path, self.save_path, dirs_exist_ok=True)
 
         except (FileExistsError):
             wx.LogError(GUIText.SAVE_FAILURE + self.save_path)
