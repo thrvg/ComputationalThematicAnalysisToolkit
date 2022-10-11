@@ -1,5 +1,9 @@
 # Computational Thematic Analysis Toolkit
 
+## Reference
+
+Robert P. Gauthier and James R. Wallace. 2022. The Computational Thematic Analysis Toolkit. Proc. ACM Hum.-Comput. Interact. 6, GROUP, Article 25 (January 2022), 15 pages. https://doi.org/10.1145/3492844
+
 ## Installation Instructions
 
 To Access most recent version: https://github.com/rpgauthier/ComputationalThematicAnalysisToolkit/releases/latest
