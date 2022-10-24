@@ -49,7 +49,7 @@ Open src folder in an IDE (tested in VS Code on Windows and OSX)
 3) run & build packages_OSX_arm64.pkgproj
 
 ### Needed applications
-- python 3.9
+- python 3.10
 - pyinstaller 4.5.1 - For Windows
 - Inno Setup Compiler - For Windows
 - packages - For OSX
@@ -73,7 +73,7 @@ Open src folder in an IDE (tested in VS Code on Windows and OSX)
 - pip install pytz
 - pip install lxml
 - pip install xmlschema
-- pip install scikit-learn==1.0.1
+- pip install scikit-learn
 
 ### Additional Steps
 - python -m spacy download fr_core_news_sm
