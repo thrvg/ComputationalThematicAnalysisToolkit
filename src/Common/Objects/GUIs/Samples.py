@@ -1525,7 +1525,7 @@ class LDAModelCreateDialog(wx.Dialog):
         sizer.Add(num_topics_sizer)
 
         num_passes_label = wx.StaticText(self, label=GUIText.NUMBER_OF_PASSES_CHOICE)
-        self.num_passes_ctrl = wx.SpinCtrl(self, min=1, max=1000, initial=100)
+        self.num_passes_ctrl = wx.SpinCtrl(self, min=1, max=100000, initial=100)
         self.num_passes_ctrl.SetToolTip(GUIText.NUMBER_OF_PASSES_TOOLTIP)
         num_passes_sizer = wx.BoxSizer(wx.HORIZONTAL)
         num_passes_sizer.Add(num_passes_label, 0, wx.ALL|wx.ALIGN_CENTRE_VERTICAL, 5)
@@ -1618,7 +1618,7 @@ class BitermModelCreateDialog(wx.Dialog):
         sizer.Add(num_topics_sizer)
 
         num_passes_label = wx.StaticText(self, label=GUIText.NUMBER_OF_PASSES_CHOICE)
-        self.num_passes_ctrl = wx.SpinCtrl(self, min=1, max=1000, initial=100)
+        self.num_passes_ctrl = wx.SpinCtrl(self, min=1, max=100000, initial=100)
         self.num_passes_ctrl.SetToolTip(GUIText.NUMBER_OF_PASSES_TOOLTIP)
         num_passes_sizer = wx.BoxSizer(wx.HORIZONTAL)
         num_passes_sizer.Add(num_passes_label, 0, wx.ALL|wx.ALIGN_CENTRE_VERTICAL, 5)
