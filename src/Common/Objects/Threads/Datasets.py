@@ -59,6 +59,8 @@ class ChangeTokenizationChoiceThread(Thread):
         self.dataset.total_tokens_remaining = included_counts['tokens']
         self.dataset.total_uniquetokens_remaining = included_counts['unique_tokens']
         
+        del db_conn
+
         #return event from thread
         result = {}
         wx.PostEvent(self._notify_window, CustomEvents.ChangeTokenizationResultEvent(result))

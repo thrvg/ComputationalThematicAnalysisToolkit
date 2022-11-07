@@ -612,13 +612,13 @@ class SampleComputationalFieldsDialog(wx.Dialog):
                                             freeze=True)
             main_frame.PulseProgressDialog(GUIText.RESTORE_BEGINNING_MSG)
 
-            db_conn = Database.DatabaseConnection(main_frame.current_workspace.name)
-
             main_frame.StepProgressDialog(GUIText.RESTORE_REPLACINGFIELDS_MSG)
             #1) remove from the dataset any currently included fields
+            db_conn = Database.DatabaseConnection(main_frame.current_workspace.name)
             for field_key in list(self.dataset.computational_fields.keys()):
                 if field_key not in self.fields:
                     db_conn.DeleteField(self.dataset.key, field_key)
+            del db_conn
             self.dataset.computational_fields.clear()
             #2) add to the dataset any fields from sample's field_list that are not included fields dataset
             for field_key in self.fields:

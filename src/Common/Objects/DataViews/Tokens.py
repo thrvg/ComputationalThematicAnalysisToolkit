@@ -69,6 +69,7 @@ class TokenListCtrl(wx.ListCtrl):
             self.data = db_conn.GetIncludedStringTokens(self.dataset.key, self.search_term, self.sort_col, self.sort_ascending)
         else:
             self.data = db_conn.GetRemovedStringTokens(self.dataset.key, self.search_term, self.sort_col, self.sort_ascending)
+        del db_conn
         self.SetItemCount(len(self.data))
 
         self.SetColumnWidth(0, wx.LIST_AUTOSIZE)
