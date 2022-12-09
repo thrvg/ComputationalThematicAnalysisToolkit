@@ -186,6 +186,7 @@ def TokenizeDataset(dataset, notify_window, main_frame, rerun=False, tfidf_updat
         dataset.total_docs = counts['documents']
         dataset.total_tokens = counts['tokens']
         dataset.total_uniquetokens = counts['unique_tokens']
+        del db_conn
         ApplyFilterAllRules(dataset, main_frame)
             
     logger.info("Finished")

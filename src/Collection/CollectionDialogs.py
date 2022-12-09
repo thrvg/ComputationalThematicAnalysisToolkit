@@ -4,6 +4,7 @@ import tweepy
 import chardet
 import pytz
 import csv
+import re
 
 import wx
 import wx.adv
@@ -829,7 +830,8 @@ class TwitterDatasetRetrieverDialog(AbstractRetrieverDialog):
         logger.info("Query: "+query)
 
         if not main_frame.options_dict['multipledatasets_mode']:
-            name = query
+            #TODO temporary fix for special character issue
+            name = re.sub('[^A-Za-z0-9]+', '', query)
 
         start_date = str(self.start_date_ctrl.GetValue().Format("%Y-%m-%d"))
         end_date = str(self.end_date_ctrl.GetValue().Format("%Y-%m-%d"))

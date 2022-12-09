@@ -133,7 +133,6 @@ class FieldsPanel(wx.Panel):
         main_frame = self.GetGrandParent().GetTopLevelParent()
         performed_flag = False
         tokenize_flag = False
-        db_conn = Database.DatabaseConnection(main_frame.current_workspace.name)
 
         def FieldRemover(field):
             item = self.chosen_fields_model.ObjectToItem(field)
@@ -158,11 +157,13 @@ class FieldsPanel(wx.Panel):
                                             freeze=True)
 
         main_frame.StepProgressDialog(GUIText.REMOVING_FIELDS_BUSY_LABEL)
+        db_conn = Database.DatabaseConnection(main_frame.current_workspace.name)
         for item in self.chosen_fields_ctrl.GetSelections():
             node = self.chosen_fields_model.ItemToObject(item)
             main_frame.PulseProgressDialog(GUIText.REMOVING_FIELDS_BUSY_MSG+str(node.name))
             if isinstance(node, Datasets.Field):
                 FieldRemover(node)
+        del db_conn
         if tokenize_flag:
             main_frame.multiprocessing_inprogress_flag = True
             self.tokenization_thread = DatasetsThreads.TokenizerThread(self, main_frame, self.dataset, tfidf_update=True)

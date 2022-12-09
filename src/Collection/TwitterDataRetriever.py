@@ -37,6 +37,9 @@ def FilesAvailable(name, start_date, end_date, prefix):
     #data location
     path = os.path.join(Constants.DATA_PATH,'Twitter')
     if not os.path.exists(path):
+        os.makedirs(path) 
+    path = os.path.join(Constants.DATA_PATH,'Twitter', name)
+    if not os.path.exists(path):
         os.makedirs(path)
     # r=root, d=directories, f = files
     for r, d, f in os.walk(path):
@@ -102,6 +105,12 @@ def RetrieveMonth(auth, name, query, month, end_date, prefix):
                             data.append(entry)
                             break
         data.insert(0, id_dict)
+        path = os.path.join(Constants.DATA_PATH,'Twitter')
+        if not os.path.exists(path):
+            os.makedirs(path) 
+        path = os.path.join(Constants.DATA_PATH,'Twitter', name)
+        if not os.path.exists(path):
+            os.makedirs(path)
         file_path = os.path.join(Constants.DATA_PATH,'Twitter', name, prefix+month+'.json')
         with open(file_path, 'w') as outfile:
             json.dump(data, outfile)
@@ -162,6 +171,12 @@ def UpdateRetrievedMonth(auth, name, query, month, end_date, file, prefix):
                             data.append(entry)
                             break
         data.insert(0, id_dict)
+        path = os.path.join(Constants.DATA_PATH,'Twitter')
+        if not os.path.exists(path):
+            os.makedirs(path) 
+        path = os.path.join(Constants.DATA_PATH,'Twitter', name)
+        if not os.path.exists(path):
+            os.makedirs(path)
         file_path = os.path.join(Constants.DATA_PATH,'Twitter', name, prefix+month+'.json')
         with open(file_path, 'w') as outfile:
             json.dump(data, outfile)

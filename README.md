@@ -1,5 +1,9 @@
 # Computational Thematic Analysis Toolkit
 
+## Reference
+
+Robert P. Gauthier and James R. Wallace. 2022. The Computational Thematic Analysis Toolkit. Proc. ACM Hum.-Comput. Interact. 6, GROUP, Article 25 (January 2022), 15 pages. https://doi.org/10.1145/3492844
+
 ## Installation Instructions
 
 To Access most recent version: https://github.com/rpgauthier/ComputationalThematicAnalysisToolkit/releases/latest
@@ -45,7 +49,7 @@ Open src folder in an IDE (tested in VS Code on Windows and OSX)
 3) run & build packages_OSX_arm64.pkgproj
 
 ### Needed applications
-- python 3.9
+- python 3.10
 - pyinstaller 4.5.1 - For Windows
 - Inno Setup Compiler - For Windows
 - packages - For OSX
@@ -69,7 +73,7 @@ Open src folder in an IDE (tested in VS Code on Windows and OSX)
 - pip install pytz
 - pip install lxml
 - pip install xmlschema
-- pip install scikit-learn==1.0.1
+- pip install scikit-learn
 
 ### Additional Steps
 - python -m spacy download fr_core_news_sm

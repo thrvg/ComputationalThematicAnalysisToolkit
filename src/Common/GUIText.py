@@ -99,7 +99,7 @@ class Common:
     THEMES = "Themes"
     NUMBER_OF_CODES = "# of Codes"
 
-    SIZE_WARNING_MSG = "WARNING: may take some time for large datasets"
+    SIZE_WARNING_MSG = "CAREFUL: may take some time for large datasets"
     TOTAL_TIME_LABEL = "Total Time:"
     CURRENT_STEP_LABEL = "Current Step: "
     CURRENT_STEP_TIME_LABEL = "Current Step Time:"
@@ -229,7 +229,7 @@ class Main(Common):
                            "\n1a) Any Sets' Descriptions will become Theme Notes"\
                            "\n2a) Any Sets' MemberCodes will become Theme to Code References"
     IMPORT_CODEBOOK_CONFIRMATION_REQUEST = "Please confirm you wish to import an external codebook file into this project."\
-                                           "\nWARNING: Existing codes may be updated if they had previously been exported or imported and are present in the external codebook"
+                                           "\nCAREFUL: Existing codes may be updated if they had previously been exported or imported and are present in the external codebook"
     IMPORT_CODEBOOK_SUCCESS = "Codes and Themes were successfully imported from an REFI-QDA Codebook."
     IMPORT_CODEBOOK_ERROR_IO = "Cannot load specified codebook file.\nPlease check that you have read access to the file and directory."
     IMPORT_CODEBOOK_ERROR_XML = "XML Error occured when importing codebook file."
@@ -383,24 +383,24 @@ class Datasets(Common):
     REDDIT_UPDATE_PUSHSHIFT_TOOLTIP = "For any part of the period between the start and end dates that the local subreddit archive does not have data,"\
                                        "update the archive using pushshift.io API"\
                                        "\nThen use the archive to create the dataset."\
-                                       "\nWARNING: This operation may take between several minutes to hours depending on sizze of existing local subreddit archive"
+                                       "\nCAREFUL: This operation may take between several minutes to hours depending on size of existing local subreddit archive"
     REDDIT_FULL_PUSHSHIFT = "Full retrieval from Pushshift.io"
     REDDIT_FULL_PUSHSHIFT_TOOLTIP = "Remove any existing local subreddit archive."\
                                     "Then retrieve a new archive from pushshift.io API for the period between the start and end dates."\
                                     "Then use the archive to create the dataset"\
-                                    "\nWARNING: This operation is a slow and may take several hours"
+                                    "\nCAREFUL: This operation is a slow and may take several hours"
     REDDIT_UPDATE_REDDITAPI = "Local Subreddit Archive and updated using Pushshift.io and Reddit API"
     REDDIT_UPDATE_REDDITAPI_TOOLTIP = "For any part of the period between the start and end dates that the local subreddit archive does not have data,"\
                                       "update the archive using pushshift.io API"\
                                       "Then update the local subreddit archive for the period between the start and end dates using the Reddit API."\
                                       "Then use the updated archive to create the dataset"\
-                                      "\nWARNING: This operation is slow and may take several hours"
+                                      "\nCAREFUL: This operation is slow and may take several hours"
     REDDIT_FULL_REDDITAPI = "Full retrieved from Pushshift.io and updated using Reddit API"
     REDDIT_FULL_REDDITAPI_TOOLTIP = "Remove any existing local subreddit archive."\
                                     "Then retrieve a new archive from pushshift.io API for the period between the start and end dates."\
                                     "Then update the archive for the period between the start and end dates using the Reddit API."\
                                     "Then use the updated archive to create the dataset"\
-                                    "\nWARNING: This operation is slow and may take several hours"
+                                    "\nCAREFUL: This operation is slow and may take several hours"
     
     #Twitter Specific Dialog
     TWITTER_RETRIEVE_LABEL = "Retrieve New Twitter Dataset"
@@ -535,7 +535,7 @@ class Samples(Main):
     CREATE_NMF_TOOLTIP = "Create a new Non-Negative Matrix Factorization Topic Model of a dataset"
     
     DELETE_SAMPLE_LABEL = "Delete Sample"
-    DELETE_SAMPLE_WARNING = "\nWARNING this action cannot be undone."
+    DELETE_SAMPLE_WARNING = "\nCAREFUL: this action cannot be undone."
 
     MERGE_TOPIC_LABEL = "Merge Topics"
     MERGE_TOPIC_SHORTHELP = "Create a new Merged Topic from selected Topics"
@@ -543,7 +543,7 @@ class Samples(Main):
     UNMERGE_TOPIC_SHORTHELP = "Remove selected topics from their Merged Topic"
     REMOVE_TOPIC_LABEL = "Remove Topics"
     REMOVE_TOPIC_SHORTHELP = "Remove selected topics from the model"
-    REMOVE_TOPIC_WARNING = "\nWARNING this action cannot be undone."
+    REMOVE_TOPIC_WARNING = "\nCAREFUL: this action cannot be undone."
     PROBABILITY_CUTOFF_LABEL = "Probability Cutoff "
     PROBABILITY_CUTOFF_TOOLTIP = "Include documents in a topic when the model predicts the probability of the topic being present in the document is greater or equal to the cutoff"
 
@@ -597,7 +597,7 @@ class Samples(Main):
     AFTERFILTERING_LABEL3 = " documents available"
     
 
-    GENERATE_WARNING = "\nWARNING: Do not shut down program or else model will not be created."
+    GENERATE_WARNING = "\nCAREFUL: Do not shut down program or else model will not be created."
     GENERATE_NOTSAVED_WARNING = "Workspace has not yet been saved."\
                                 "\nTo generate this type of sample you need to save the workspace"
     GENERATING_DEFAULT_LABEL = "Generating Sample"
@@ -673,7 +673,7 @@ class Collection(Main, Datasets):
     DATASETS_UNGROUP_TOOLTIP = "Selected datasets will be ungrouped"
     DATASETS_DELETE_DATASET = "Delete Dataset"
     DATASETS_DELETE_TOOLTIP = "Selected datasets will be removed"
-    DATASETS_DELETE_CONFIRMATION_WARNING = "\nWARNING this action can only be undone by adding new datasets."
+    DATASETS_DELETE_CONFIRMATION_WARNING = "\nCAREFUL: this action can only be undone by adding new datasets."
 
     DATASETSDATA_LABEL = "Dataset Data"
     VIEW_DETAILS = "View Details"
@@ -817,7 +817,7 @@ class Filtering(Main, Datasets):
 
 
     FILTERS_IMPORT_CONFIRMATION_REQUEST = "Are you sure you want to proceed with importing rule?"\
-                                          "\nWARNING: Any current rules will be lost."
+                                          "\nCAREFUL: Any current rules will be lost."
     FILTERS_IMPORT = "Import Rules"
     FILTERS_IMPORT_TOOLTIP = "Import Custom Rules from file"
     FILTERS_EXPORT = "Export Rules"

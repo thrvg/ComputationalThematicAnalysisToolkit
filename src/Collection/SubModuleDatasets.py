@@ -328,7 +328,7 @@ class DatasetsListPanel(wx.Panel):
                     main_frame.PulseProgressDialog(GUIText.DELETING_BUSY_REMOVING_MSG+str(node.name))
                     if node.key in main_frame.datasets:
                         del main_frame.datasets[node.key]
-                    db_conn.DeleteDatasetFromStringTokens(node.key)
+                    db_conn.DeleteDataset(node.key)
                     node.DestroyObject()
                     remaining_loops -= 1
                     current_time = datetime.now()

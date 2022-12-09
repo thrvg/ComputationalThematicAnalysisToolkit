@@ -110,7 +110,7 @@ class SaveThread(Thread):
                 logger.info("Moving Files to autsave folder")
                 if os.path.exists(self.save_path):
                     shutil.rmtree(self.save_path)
-                shutil.copytree(self.current_workspace_path, self.save_path)
+                shutil.copytree(self.current_workspace_path, self.save_path, dirs_exist_ok=True)
 
         except (FileExistsError):
             wx.LogError(GUIText.SAVE_FAILURE + self.save_path)
@@ -138,7 +138,26 @@ class LoadThread(Thread):
         try:
             if not self.restoreload:
                 with tarfile.open(self.save_path, "r") as tar_file:
-                    tar_file.extractall(self.current_workspace_path)
+                    def is_within_directory(directory, target):
+                        
+                        abs_directory = os.path.abspath(directory)
+                        abs_target = os.path.abspath(target)
+                    
+                        prefix = os.path.commonprefix([abs_directory, abs_target])
+                        
+                        return prefix == abs_directory
+                    
+                    def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+                    
+                        for member in tar.getmembers():
+                            member_path = os.path.join(path, member.name)
+                            if not is_within_directory(path, member_path):
+                                raise Exception("Attempted Path Traversal in Tar File")
+                    
+                        tar.extractall(path) 
+                        
+                    
+                    safe_extract(tar_file, self.current_workspace_path)
             else:
                 shutil.copytree(self.save_path, self.current_workspace_path, dirs_exist_ok=True)
 

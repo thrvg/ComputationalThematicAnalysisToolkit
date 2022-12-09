@@ -698,8 +698,7 @@ class WordsPanel(wx.Panel):
         if len(document_ids) < 20:
             sample_size = len(document_ids)
         sampled_document_ids = random.sample(document_ids, k=sample_size)
-        db_conn = Database.DatabaseConnection(main_frame.current_workspace.name)
-        document_keys = db_conn.GetDocumentKeys(sampled_document_ids)
+        document_keys = Database.DatabaseConnection(main_frame.current_workspace.name).GetDocumentKeys(sampled_document_ids)
         documents = []
         for document_key in document_keys[:20]:
             documents.append(self.dataset.GetDocument(document_key))

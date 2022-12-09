@@ -101,7 +101,6 @@ class SampleCreatePanel(wx.Panel):
     def OnStartCreateSample(self, event, model_type):
         logger = logging.getLogger(__name__+".SampleCreatePanel.OnStartCreateSample")
         logger.info("Starting")
-        parent_notebook = self.GetParent()
         main_frame = wx.GetApp().GetTopWindow()
                     
         new_sample = None
@@ -130,24 +129,10 @@ class SampleCreatePanel(wx.Panel):
             if status_flag:
                 self.Freeze()
                 main_frame.CreateProgressDialog(GUIText.GENERATING_DEFAULT_LABEL,
-                                    warning=GUIText.GENERATE_WARNING+"\n"+GUIText.SIZE_WARNING_MSG,
+                                    warning=GUIText.SIZE_WARNING_MSG,
                                     freeze=False)
                 main_frame.StepProgressDialog(GUIText.GENERATING_DEFAULT_MSG)
-                name = model_parameters['name']
-                main_frame.PulseProgressDialog(GUIText.GENERATING_RANDOM_SUBLABEL+str(name))
-                dataset_key = model_parameters['dataset_key']
-                dataset = main_frame.datasets[dataset_key]
-                model_parameters['doc_ids'] = list(dataset.data.keys())
-                new_sample = Samples.RandomSample(name, dataset_key, model_parameters)
-                new_sample.Generate(dataset)
-                new_sample_panel = RandomSamplePanel(parent_notebook, new_sample, dataset, self.GetParent().GetSize())
-                main_frame.samples[new_sample.key] = new_sample
-                parent_notebook.InsertPage(len(parent_notebook.sample_panels), new_sample_panel, new_sample.name, select=True)
-                parent_notebook.sample_panels[new_sample.key] = new_sample_panel
-                main_frame.DocumentsUpdated(self)
-                main_frame.AutoSaveStart()
-                main_frame.CloseProgressDialog(thaw=False)
-                self.Thaw()
+                main_frame.AutoSaveStart(self.OnContinueCreateSample, [model_type, model_parameters])
         elif model_type == 'LDA':
             with LDAModelCreateDialog(self) as create_dialog:
                 if create_dialog.ShowModal() == wx.ID_OK:
@@ -159,12 +144,7 @@ class SampleCreatePanel(wx.Panel):
                     main_frame.StepProgressDialog(GUIText.GENERATING_DEFAULT_MSG)
                     self.start_dt = datetime.now()
                     model_parameters = create_dialog.model_parameters
-                    name = model_parameters['name']
-                    main_frame.PulseProgressDialog(GUIText.GENERATING_LDA_SUBLABEL+str(name))
-                    self.capture_thread = SamplesThreads.CaptureThread(self,
-                                                                       main_frame,
-                                                                       model_parameters,
-                                                                       model_type)
+                    main_frame.AutoSaveStart(self.OnContinueCreateSample, [model_type, model_parameters])
         elif model_type == 'Biterm':
             with BitermModelCreateDialog(self) as create_dialog:
                 if create_dialog.ShowModal() == wx.ID_OK:
@@ -175,12 +155,7 @@ class SampleCreatePanel(wx.Panel):
                     main_frame.StepProgressDialog(GUIText.GENERATING_DEFAULT_MSG)
                     self.start_dt = datetime.now()
                     model_parameters = create_dialog.model_parameters
-                    name = model_parameters['name']
-                    main_frame.PulseProgressDialog(GUIText.GENERATING_BITERM_SUBLABEL+str(name))
-                    self.capture_thread = SamplesThreads.CaptureThread(self,
-                                                                       main_frame,
-                                                                       model_parameters,
-                                                                       model_type)
+                    main_frame.AutoSaveStart(self.OnContinueCreateSample, [model_type, model_parameters])
         elif model_type == 'NMF':
             with NMFModelCreateDialog(self) as create_dialog:
                 if create_dialog.ShowModal() == wx.ID_OK:
@@ -191,12 +166,48 @@ class SampleCreatePanel(wx.Panel):
                     main_frame.StepProgressDialog(GUIText.GENERATING_DEFAULT_MSG)
                     self.start_dt = datetime.now()
                     model_parameters = create_dialog.model_parameters
-                    name = model_parameters['name']
-                    main_frame.PulseProgressDialog(GUIText.GENERATING_NMF_SUBLABEL+str(name))
-                    self.capture_thread = SamplesThreads.CaptureThread(self,
-                                                                       main_frame,
-                                                                       model_parameters,
-                                                                       model_type)
+                    main_frame.AutoSaveStart(self.OnContinueCreateSample, [model_type, model_parameters])
+        logger.info("Finished")
+
+
+    def OnContinueCreateSample(self, model_args):
+        logger = logging.getLogger(__name__+".SampleCreatePanel.OnContinueCreateSample")
+        logger.info("Starting")
+        parent_notebook = self.GetParent()
+        main_frame = wx.GetApp().GetTopWindow()
+
+        model_type = model_args[0]
+        model_parameters = model_args[1]
+        name = model_parameters['name']
+        if model_type == 'Random':
+            main_frame.PulseProgressDialog(GUIText.GENERATING_RANDOM_SUBLABEL+str(name))
+            dataset_key = model_parameters['dataset_key']
+            dataset = main_frame.datasets[dataset_key]
+            model_parameters['doc_ids'] = list(dataset.data.keys())
+            new_sample = Samples.RandomSample(name, dataset_key, model_parameters)
+            new_sample.Generate(dataset)
+            new_sample_panel = RandomSamplePanel(parent_notebook, new_sample, dataset, self.GetParent().GetSize())
+            main_frame.samples[new_sample.key] = new_sample
+            parent_notebook.InsertPage(len(parent_notebook.sample_panels), new_sample_panel, new_sample.name, select=True)
+            parent_notebook.sample_panels[new_sample.key] = new_sample_panel
+            main_frame.DocumentsUpdated(self)
+            main_frame.AutoSaveStart()
+            main_frame.CloseProgressDialog(thaw=False)
+            self.Thaw()
+        else:
+            if model_type == 'LDA':
+                main_frame.PulseProgressDialog(GUIText.GENERATING_LDA_SUBLABEL+str(name))
+                main_frame.statusbar.SetStatusText("\u24D8 LDA model - "+str(name)+" is generating. Do Not Close Application")
+            elif model_type == 'Biterm':
+                main_frame.PulseProgressDialog(GUIText.GENERATING_BITERM_SUBLABEL+str(name))
+                main_frame.statusbar.SetStatusText("\u24D8 Biterm model - "+str(name)+" is generating. Do Not Close Application")
+            elif model_type == 'NMF':
+                main_frame.PulseProgressDialog(GUIText.GENERATING_NMF_SUBLABEL+str(name))
+                main_frame.statusbar.SetStatusText("\u24D8 NMF model - "+str(name)+" is generating. Do Not Close Application")
+            self.capture_thread = SamplesThreads.CaptureThread(self,
+                                                            main_frame,
+                                                            model_parameters,
+                                                            model_type)
         logger.info("Finished")
 
     def OnFinishCreateSample(self, event):
@@ -601,13 +612,13 @@ class SampleComputationalFieldsDialog(wx.Dialog):
                                             freeze=True)
             main_frame.PulseProgressDialog(GUIText.RESTORE_BEGINNING_MSG)
 
-            db_conn = Database.DatabaseConnection(main_frame.current_workspace.name)
-
             main_frame.StepProgressDialog(GUIText.RESTORE_REPLACINGFIELDS_MSG)
             #1) remove from the dataset any currently included fields
+            db_conn = Database.DatabaseConnection(main_frame.current_workspace.name)
             for field_key in list(self.dataset.computational_fields.keys()):
                 if field_key not in self.fields:
                     db_conn.DeleteField(self.dataset.key, field_key)
+            del db_conn
             self.dataset.computational_fields.clear()
             #2) add to the dataset any fields from sample's field_list that are not included fields dataset
             for field_key in self.fields:
@@ -868,7 +879,6 @@ class TopicSamplePanel(AbstractSamplePanel):
         self.Freeze()
         main_frame = wx.GetApp().GetTopWindow()
         main_frame.CreateProgressDialog(GUIText.GENERATED_DEFAULT_LABEL,
-                                        warning=GUIText.GENERATE_WARNING+"\n"+GUIText.SIZE_WARNING_MSG,
                                         freeze=False)
         try:
             main_frame.PulseProgressDialog(GUIText.GENERATED_DEFAULT_LABEL+": "+str(self.sample.name))
@@ -882,6 +892,7 @@ class TopicSamplePanel(AbstractSamplePanel):
         finally:
             main_frame.multiprocessing_inprogress_flag = False
             main_frame.CloseProgressDialog(thaw=False)
+            main_frame.statusbar.SetStatusText("")
             self.Thaw()
         logger.info("Finished")
     
@@ -1457,7 +1468,7 @@ class TopicListPanel(wx.Panel):
         cutoff_sizer.Add(self.cutoff_spin, 0, wx.ALIGN_CENTER)
         controls_sizer.Add(cutoff_sizer, proportion=0, flag=wx.ALL, border=5)
         
-        self.topic_list_model = SamplesDataViews.TopicViewModel(sample_panel, sample.parts_dict.values())
+        self.topic_list_model = SamplesDataViews.TopicViewModel(self.sample_panel, sample.parts_dict.values())
         self.topic_list_ctrl = SamplesDataViews.TopicViewCtrl(self, self.topic_list_model)
         sizer.Add(self.topic_list_ctrl, 1, wx.EXPAND)
 
@@ -1514,7 +1525,7 @@ class LDAModelCreateDialog(wx.Dialog):
         sizer.Add(num_topics_sizer)
 
         num_passes_label = wx.StaticText(self, label=GUIText.NUMBER_OF_PASSES_CHOICE)
-        self.num_passes_ctrl = wx.SpinCtrl(self, min=1, max=1000, initial=100)
+        self.num_passes_ctrl = wx.SpinCtrl(self, min=1, max=100000, initial=100)
         self.num_passes_ctrl.SetToolTip(GUIText.NUMBER_OF_PASSES_TOOLTIP)
         num_passes_sizer = wx.BoxSizer(wx.HORIZONTAL)
         num_passes_sizer.Add(num_passes_label, 0, wx.ALL|wx.ALIGN_CENTRE_VERTICAL, 5)
@@ -1607,7 +1618,7 @@ class BitermModelCreateDialog(wx.Dialog):
         sizer.Add(num_topics_sizer)
 
         num_passes_label = wx.StaticText(self, label=GUIText.NUMBER_OF_PASSES_CHOICE)
-        self.num_passes_ctrl = wx.SpinCtrl(self, min=1, max=1000, initial=100)
+        self.num_passes_ctrl = wx.SpinCtrl(self, min=1, max=100000, initial=100)
         self.num_passes_ctrl.SetToolTip(GUIText.NUMBER_OF_PASSES_TOOLTIP)
         num_passes_sizer = wx.BoxSizer(wx.HORIZONTAL)
         num_passes_sizer.Add(num_passes_label, 0, wx.ALL|wx.ALIGN_CENTRE_VERTICAL, 5)
